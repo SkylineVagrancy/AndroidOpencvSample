@@ -6,8 +6,11 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.zjp.androidopencv.cameracalibration.CameraCalibrationActivity;
 import com.zjp.androidopencv.cameracontrol.Tutorial3Activity;
@@ -18,7 +21,11 @@ import com.zjp.androidopencv.mixedprocessing.Tutorial2Activity;
 import com.zjp.androidopencv.puzzle.Puzzle15Activity;
 
 import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
 import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -77,8 +84,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
+        OpenCVLoader.initDebug();
+        Mat dst = new Mat();
+        Bitmap srcBitmap = BitmapFactory.decodeFile("/sdcard/Download/mmexport1631333492997-03.jpeg");
+        Mat src = Imgcodecs.imread("/sdcard/Download/mmexport1631333492997-03.jpeg");
+        Imgproc.threshold(src, dst, 150.0, 255.0, 0);
+        Utils.matToBitmap(dst, srcBitmap);
+        ImageView img = findViewById(R.id.dst);
+        img.setImageBitmap(srcBitmap);
 
     }
 }
